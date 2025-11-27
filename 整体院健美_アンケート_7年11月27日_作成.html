@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カウンセリングシート</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* --- 基本設定 --- */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f0fdf4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(19, 202, 94, 0.15);
+            width: 90%;
+            max-width: 600px;
+            padding: 25px;
+            box-sizing: border-box;
+        }
+
+        /* --- 見出し --- */
+        h1 {
+            background: linear-gradient(135deg, #13ca5e, #0e9645);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            margin: -25px -25px 25px -25px;
+            font-size: 22px;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- ラベルと必須マーク --- */
+        .label {
+            display: flex;
+            align-items: center;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #2c3e50;
+            border-left: 5px solid #13ca5e;
+            padding-left: 10px;
+        }
+
+        .required-badge {
+            background-color: #ff4d4f;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+            white-space: nowrap; /* 折り返し防止 */
+        }
+
+        .optional-badge {
+            background-color: #999;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        /* --- 入力フォーム --- */
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #fafafa;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #13ca5e;
+            background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(19, 202, 94, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* --- 選択ボタン群 --- */
+        .selection-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .selection-group button {
+            flex: 1 1 30%;
+            padding: 12px 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .yes-no-group button {
+            flex: 1 1 45%;
+        }
+
+        .selection-group button:hover {
+            background-color: #f1fcf5;
+        }
+
+        /* 選択時のスタイル */
+        .selection-group button.active {
+            background-color: #13ca5e;
+            color: #fff;
+            border-color: #13ca5e;
+            font-weight: bold;
+            transform: scale(1.02);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 選択されていることがわかりやすいように少し影を追加 */
+        }
+
+        /* --- 送信ボタン --- */
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 8px;
+            background-color: #333;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 40px;
+            transition: background 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .submit-button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+
+        .info-text {
+            font-size: 13px;
+            color: #666;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            .selection-group button {
+                flex: 1 1 45%;
+            }
+            h1 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>カウンセリングシート</h1>
+        <div class="info-text">
+            ご来院ありがとうございます。<br>
+            より良い施術を提供するため、以下の項目にご協力をお願いいたします。<br>
+            入力後、一番下の【送信】ボタンを押してください。
+        </div>
+
+        <div class="label">お名前<span class="required-badge">必須</span></div>
+        <input type="text" id="name" placeholder="例：整体 太郎">
+
+        <div class="label">お電話番号<span class="required-badge">必須</span></div>
+        <input type="tel" id="phone" placeholder="例：090-1234-5678">
+
+        <div class="label">ご職業<span class="optional-badge">任意</span></div>
+        <input type="text" id="occupation" placeholder="例：会社員、主婦など">
+
+        <div class="label">生年月日<span class="optional-badge">任意</span></div>
+        <input type="text" id="birthday" placeholder="例：1990年1月1日">
+
+        <div class="label">本日来院された主な理由<span class="required-badge">必須</span></div>
+        <textarea id="reason" placeholder="例：腰が痛い、肩こりがひどい、姿勢を治したい等"></textarea>
+
+        <div class="label">これまでに大きな怪我や<br>病気をされたことはありますか？<span class="required-badge">必須</span></div>
+        <div class="selection-group yes-no-group">
+            <button type="button" onclick="selectHistory(this)">はい</button>
+            <button type="button" onclick="selectHistory(this)">いいえ</button>
+        </div>
+
+        <div class="label">⑥で【はい】と答えた方は<br>内容をお聞かせください<span class="optional-badge">任意</span></div>
+        <textarea id="history_detail" placeholder="例：3年前に交通事故でむち打ち、ヘルニア手術など"></textarea>
+
+        <div class="label">不調を感じたり<br>気になる箇所を教えてください<span class="required-badge">必須(複数可)</span></div>
+        <div class="selection-group" id="symptom-group">
+            <button type="button" onclick="selectSymptom(this)">頭</button>
+            <button type="button" onclick="selectSymptom(this)">目</button>
+            <button type="button" onclick="selectSymptom(this)">鼻</button>
+            <button type="button" onclick="selectSymptom(this)">耳</button>
+            <button type="button" onclick="selectSymptom(this)">ほうれい線</button>
+            <button type="button" onclick="selectSymptom(this)">しわ・たるみ</button>
+            <button type="button" onclick="selectSymptom(this)">首</button>
+            <button type="button" onclick="selectSymptom(this)">肩</button>
+            <button type="button" onclick="selectSymptom(this)">腕・肘・手指</button>
+            <button type="button" onclick="selectSymptom(this)">デコルテ</button>
+            <button type="button" onclick="selectSymptom(this)">お腹</button>
+            <button type="button" onclick="selectSymptom(this)">背中</button>
+            <button type="button" onclick="selectSymptom(this)">腰</button>
+            <button type="button" onclick="selectSymptom(this)">股関節</button>
+            <button type="button" onclick="selectSymptom(this)">足・膝・足趾</button>
+            <button type="button" onclick="selectSymptom(this)">その他</button>
+        </div>
+
+        <div class="label">⑧で【その他】をお選びの方は<br>内容をお書きください<span class="optional-badge">任意</span></div>
+        <textarea id="symptom_other" placeholder="具体的な症状など"></textarea>
+
+        <button class="submit-button" onclick="submitForm()">送信</button>
+    </div>
+
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script>
+        // 選択値を格納する変数（怪我の履歴は単一選択のまま）
+        let selectedHistory = '';
+
+        // LIFF初期化
+        document.addEventListener('DOMContentLoaded', function () {
+            liff.init({
+                liffId: '2005254357-zKma9BZk' 
+            }).then(() => {
+                console.log('LIFF初期化成功');
+            }).catch((err) => {
+                console.error('LIFF初期化失敗', err);
+            });
+        });
+
+        // 怪我・病気の履歴選択（単一選択）
+        function selectHistory(element) {
+            const buttons = element.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            element.classList.add('active');
+            selectedHistory = element.innerText;
+        }
+
+        // 気になる箇所の選択（複数選択）
+        function selectSymptom(element) {
+            // 他のボタンを解除せず、クリックされたボタンの状態を切り替える（トグル）
+            element.classList.toggle('active');
+        }
+
+        // 送信処理
+        function submitForm() {
+            // 値の取得
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const occupation = document.getElementById('occupation').value;
+            const birthday = document.getElementById('birthday').value;
+            const reason = document.getElementById('reason').value;
+            const historyDetail = document.getElementById('history_detail').value;
+            const symptomOther = document.getElementById('symptom_other').value;
+
+            // 気になる箇所の選択状態を取得（id="symptom-group" の中で active クラスがついているものを探す）
+            const symptomButtons = document.querySelectorAll('#symptom-group button.active');
+            // 選択されたボタンのテキストを配列にしてから、「、」で連結する
+            const selectedSymptoms = Array.from(symptomButtons).map(btn => btn.innerText).join('、');
+
+            // バリデーション
+            if (!name) { alert('「お名前」を入力してください。'); return; }
+            if (!phone) { alert('「お電話番号」を入力してください。'); return; }
+            if (!reason) { alert('「来院された理由」を入力してください。'); return; }
+            if (!selectedHistory) { alert('「怪我や病気の履歴」を選択してください。'); return; }
+            
+            // 複数選択なので、0個の場合にエラー
+            if (symptomButtons.length === 0) { alert('「気になる箇所」を1つ以上選択してください。'); return; }
+
+            // 送信メッセージの作成
+            const msg = `【カウンセリングシート】\n` +
+                        `\n[お名前]\n${name}` +
+                        `\n\n[電話番号]\n${phone}` +
+                        `\n\n[ご職業]\n${occupation || '未記入'}` +
+                        `\n\n[生年月日]\n${birthday || '未記入'}` +
+                        `\n\n[来院理由]\n${reason}` +
+                        `\n\n[怪我・病歴]\n${selectedHistory}` +
+                        `\n(詳細: ${historyDetail || 'なし'})` +
+                        `\n\n[気になる箇所]\n${selectedSymptoms}` +
+                        `\n(その他詳細: ${symptomOther || 'なし'})`;
+
+            // LINEトークへ送信
+            if (!liff.isInClient()) {
+                alert('LINEアプリ外のため送信できませんが、以下の内容で作成されました:\n\n' + msg);
+            } else {
+                liff.sendMessages([{
+                    type: 'text',
+                    text: msg
+                }]).then(() => {
+                    alert('ご回答いただきありがとうございます。');
+                    liff.closeWindow();
+                }).catch((err) => {
+                    console.error('送信エラー', err);
+                    alert('送信に失敗しました。');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
